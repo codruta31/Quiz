@@ -1,6 +1,6 @@
-from quiz_body import Question
+from quiz_structure import Question
 from data import raw_questions
-from quiz_body import QuizBody
+from quiz_structure import Quiz
 
 questions = []
 
@@ -10,11 +10,4 @@ for element in raw_questions:
 	new_question = Question(question_text, question_answer)
 	questions.append(new_question)
 
-
-quiz = QuizBody(questions)
-
-while quiz.still_has_questions():
-	quiz.next_question()
-
-print("You've reached the end of the quiz!")
-print(f"Your final score is {quiz.score}/{quiz.question_number}")
+quiz = Quiz(questions)
