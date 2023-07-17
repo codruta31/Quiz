@@ -14,32 +14,32 @@ class Quiz:
 		self.questions = questions
 		# create tkinter screen (GUI)
 		self.window = Tk()
-		self.window.geometry('600x500')
+		self.window.geometry('700x500')
 		self.window.title("Codruta's Quiz")
 		# display quiz name on GUI
-		self.my_quiz_name = Label(text="Codruta's Quiz", font=30, width=60, height=3)
+		self.my_quiz_name = Label(text="Codruta's Quiz", font=45, width=40, height=2, fg='dark green')
 
-		#  display the question text for the user in GUI
-		self.quiz_display_questions = Label(text=0, width=80)
+		#  display the next question text for the user in GUI
+		self.quiz_display_questions = Label(text=0, font=16, width=80)
 
 		# create text box for user to enter the answer
-		self.user_response = Entry(width=15)
+		self.user_response = Entry(width=20)
 
 		# create button to submit answer
-		self.submit_answer_button = Button(text='Trimite răspuns!', command=self.check_answer)
+		self.submit_answer_button = Button(text='Trimite răspuns!', command=self.check_answer, bg='pale green')
 
 		# create a Label object to display if the user's answer is correct or not
 		self.status = Label(text=0)
 
 		# create a button to display the next question when clicked
-		self.next_question_button = Button(text='Următoarea întrebare', command=self.next_question)
+		self.next_question_button = Button(text='Următoarea întrebare', command=self.next_question, bg='DarkOliveGreen1')
 
 		# create a Label to display the score in real time
 		self.current_score_box = Label(text='')
 
 		# display the first question at start
 		self.display_current_question()
-		# initialize the widgets and set there place on GUI
+		# initialize the widgets and set their place on GUI grid
 		self.my_quiz_name.grid(column=0, row=0)
 		self.quiz_display_questions.grid(column=0, row=2, sticky=W, padx=2)
 		self.user_response.grid(column=0, row=3)
@@ -68,7 +68,7 @@ class Quiz:
 		self.submit_answer_button.config(state=DISABLED)
 		if user_answer.lower() == correct_answer.lower():
 			self.score += 1
-			self.status.config(text='Răspuns corect!', fg='green')  # modify the text to display, for the Label 'status'
+			self.status.config(text='Răspuns corect!', fg='dark green')  # modify the text to display, for the Label 'status'
 		else:
 			self.status.config(text=f'Răspuns greșit! Răspunsul corect este: {correct_answer}!', fg='red')
 		self.current_score_box.config(text=f'Scorul tău actual este: {self.score}/{self.question_number + 1}')
@@ -80,18 +80,20 @@ class Quiz:
 		if self.still_has_questions():
 			self.display_current_question()
 			self.user_response.delete(0, END)
+			self.current_score_box.config(text=f'Scorul tău actual este: {self.score}/{self.question_number}')
 		else:
-
 			self.submit_answer_button.destroy()
 			self.next_question_button.destroy()
 			self.status.destroy()
-			self.current_score_box.config(text=f'Ai ajuns la finalul quiz-ului!\nScorul tău final este: {self.score} din {self.question_number} de întrebări.\n {self.end_message()}')
+			self.user_response.destroy()
+			self.quiz_display_questions.config(text='')
+			self.current_score_box.config(text=f'Ai ajuns la finalul quiz-ului!\nScorul tău final este: {self.score} din {self.question_number} întrebări.\n {self.end_message()}', bg='DarkOliveGreen2', font=20)
 
 	def end_message(self):
 		if self.score < 5:
 			final_message_text = 'Scorul tău poate fi îmbunătățit !'
 			return final_message_text
-		elif 5 >= self.score <= 9:
+		elif self.score <= 9 and self.score >= 5:
 			final_message_text = 'Te-ai descurcat bine! Felicitări'
 			return final_message_text
 		else:
